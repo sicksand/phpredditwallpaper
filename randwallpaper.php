@@ -7,6 +7,7 @@
     Version : 0.2
     Date : 05/01/2020 (that is 5th of January)
     Changes :
+    0.4 - check width and height of image
     0.3 - delete wallpaper first, randomize wallpaper 
     0.2 - Rewrite code
     0.1 - First release
@@ -45,14 +46,30 @@ foreach ($children as $child){
     downloadImage($rurl);
     
 }
-
+// delete file
+delete();
 function downloadImage($durl) {
 	
 	$subdirectory = "wallpaper";
 	$contents = file_get_contents($durl);
+    // get the name
 	$name = substr($durl, strrpos($durl, '/') + 1);
-	file_put_contents($subdirectory ."/".$name, $contents);
-	
+    file_put_contents($subdirectory ."/".$name, $contents);
+    //check image size to get wodth and height, if height > width delete it cause it for portrait
+    //
+}
+
+function delete() {
+    // check image size to get wodth and height, if height > width delete it cause it for portrait
+    $files = glob('wallpaper/*'); // get all file names
+    foreach($files as $file){ // iterate files
+    $data = getimagesize($file);
+    $width = $data[0];
+    $height = $data[1];    
+      if($height > $width)
+        unlink($file); // delete file
+    }
+    
 }
 
 
