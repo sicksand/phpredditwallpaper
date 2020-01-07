@@ -7,12 +7,26 @@
     Version : 0.2
     Date : 05/01/2020 (that is 5th of January)
     Changes :
+    0.3 - delete wallpaper first, randomize wallpaper 
     0.2 - Rewrite code
     0.1 - First release
 
 
 */
-$url = "https://www.reddit.com/r/wallpaper/hot.json";
+
+// Delete all files from wallpaper directory. Don't want to fill up space.
+$files = glob('wallpaper/*'); // get all file names
+foreach($files as $file){ // iterate files
+  if(is_file($file))
+    unlink($file); // delete file
+}
+
+// This is the array of best wallpaper subreddit in reddit. You can find it on your own and add to it.
+$wallpapers = array("EarthPorn", "CityPorn","SkyPorn","WeatherPorn","BotanicalPorn","LakePorn","VillagePorn","BeachPorn","WaterPorn","SpacePorn","multiwall","wallpapers","wallpaper");
+// Randomize it
+$randwallpaper = array_rand($wallpapers);
+
+$url = "https://www.reddit.com/r/".$wallpapers[$randwallpaper]."/hot.json";
 
 $string = file_get_contents($url);
 if ($string === false) {
@@ -40,4 +54,6 @@ function downloadImage($durl) {
 	file_put_contents($subdirectory ."/".$name, $contents);
 	
 }
+
+
 ?>
